@@ -1,0 +1,48 @@
+# Configuration for Dual-Use Mitigation Training
+
+# Model settings
+model:
+  name: "gpt2-medium"  # HuggingFace model name
+  branch_layers: [1, 6, 12, 18, 24]  # Layers to test (proof-of-concept)
+  lambda_adv: 1.0  # Weight for adversarial loss
+
+# Training settings
+training:
+  batch_size: 4  # Adjust based on GPU memory
+  learning_rate: 5e-5
+  num_epochs: 3  # Proof-of-concept: start small
+  grad_accum_steps: 4  # Effective batch size = batch_size * grad_accum_steps
+  max_grad_norm: 1.0
+  max_length: 512  # Maximum sequence length
+  warmup_steps: 100
+
+# Data settings
+data:
+  safe_data_path: null  # Path to safe data (null = use placeholder)
+  harmful_data_path: null  # Path to harmful data (null = use synthetic)
+  num_safe_samples: 1000  # Number of safe samples
+  num_harmful_samples: 500  # Number of harmful samples
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+# Evaluation settings
+evaluation:
+  jailbreak_prompts: null  # Path to jailbreak prompts (null = use defaults)
+  max_new_tokens: 50  # Tokens to generate for jailbreak testing
+
+# Paths
+paths:
+  experiment_dir: "experiments/layer_experiments"
+  checkpoint_dir: "experiments/checkpoints"
+  results_dir: "experiments/results"
+
+# Logging
+logging:
+  log_interval: 10  # Log every N steps
+  save_interval: 1  # Save checkpoint every N epochs
+  use_wandb: false  # Set to true to use Weights & Biases
+
+# Device
+device: "cuda"  # "cuda" or "cpu"
+
